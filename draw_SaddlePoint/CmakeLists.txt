@@ -1,0 +1,35 @@
+cmake_minimum_required(VERSION 3.1...3.18)
+project(drawSaddlePoint)
+
+set(CMAKE_CXX_STANDARD 11)
+
+#config CGAL
+find_package( CGAL QUIET COMPONENTS  )
+if ( NOT CGAL_FOUND )
+    message(STATUS "This project requires the CGAL library, and will not be compiled.")
+    return()
+endif()
+include( ${CGAL_USE_FILE} )
+find_package( Boost REQUIRED )
+if ( NOT Boost_FOUND )
+    message(STATUS "This project requires the Boost library, and will not be compiled.")
+    return()
+endif()
+#config EIGEN
+set(EIGEN3_INCLUDE_DIR D:/eigen-3.3.9)
+find_package(Eigen3 3.3.0)
+include(CGAL_Eigen_support)
+if (NOT TARGET CGAL::Eigen_support)
+  message(STATUS "This project requires the Eigen library (3.3 or greater), and will not be compiled.")
+  return()
+endif()
+
+
+# config Easy3D
+set(Easy3D_DIR C:/dev/Easy3D-main/build)
+find_package(Easy3D REQUIRED)
+
+
+
+add_executable(drawSaddlePoint main.cpp "ContourLine.cpp" "ContourLine.h" "SaddlePoint.cpp" "SaddlePoint.h")
+target_link_libraries(drawSaddlePoint CGAL::Eigen_support easy3d::core easy3d::viewer)
